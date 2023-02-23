@@ -5,17 +5,25 @@ const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const bodyParser = require("body-parser");
 const path = require("path");
+const cors = require("cors");
 
 app.use(express.json());
 app.use(cookieParser());
-app.use(bodyParser.urlencoded({extended:true,limit:"50mb"}));
+app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(fileUpload());
+app.use(cors());
+
+app.get("/", (req, res) => {
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.send("API is running...");
+});
 
 // config
-if(process.env.NODE_ENV!=="PRODUCTION"){
-    require("dotenv").config({
-        path:"backend/config/.env"
- })}
+if (process.env.NODE_ENV !== "PRODUCTION") {
+  require("dotenv").config({
+    path: "backend/config/.env",
+  });
+}
 
 // Route import
 const product = require("./routes/ProductRoute");
@@ -31,7 +39,7 @@ app.use("/api/v2", order);
 
 app.use("/api/v2", payment);
 
-// It's for errorHanderling
+// It's for errorHandler
 app.use(ErrorHandler);
 
-module.exports = app
+module.exports = app;
