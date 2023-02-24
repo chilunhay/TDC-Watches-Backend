@@ -13,6 +13,10 @@ app.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }));
 app.use(fileUpload());
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.send("API is running...");
+});
 
 // config
 if (process.env.NODE_ENV !== "PRODUCTION") {
@@ -21,14 +25,7 @@ if (process.env.NODE_ENV !== "PRODUCTION") {
   });
 }
 
-
 // Route import
-
-app.get("/", (req, res) => {
-  res.setHeader("Access-Control-Allow-Credentials", "true");
-  res.send("API is running...");
-});
-
 const product = require("./routes/ProductRoute");
 const user = require("./routes/UserRoute");
 const order = require("./routes/OrderRoute");
